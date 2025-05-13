@@ -3,108 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalkulator Rasio Keuangan</title>
+  <title>Web Investasi</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 p-6">
-  <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-md">
-    <h1 class="text-2xl font-bold mb-6 text-center">Kalkulator Rasio Keuangan</h1>
-    <form id="financeForm" class="space-y-4">
-      <div>
-        <label class="block">Laba Bersih (Net Income)</label>
-        <input type="number" id="netIncome" class="w-full border p-2 rounded" required>
-      </div>
-      <div>
-        <label class="block">Total Aset</label>
-        <input type="number" id="totalAssets" class="w-full border p-2 rounded" required>
-      </div>
-      <div>
-        <label class="block">Ekuitas Pemegang Saham</label>
-        <input type="number" id="equity" class="w-full border p-2 rounded" required>
-      </div>
-      <div>
-        <label class="block">Harga Saham per Lembar</label>
-        <input type="number" id="stockPrice" class="w-full border p-2 rounded" required>
-      </div>
-      <div>
-        <label class="block">Laba per Saham (EPS)</label>
-        <input type="number" id="eps" class="w-full border p-2 rounded" required>
-      </div>
-      <div>
-        <label class="block">Nilai Buku per Saham (BVPS)</label>
-        <input type="number" id="bvps" class="w-full border p-2 rounded" required>
-      </div>
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
-    </form>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Dashboard Investasi</h1>
 
-    <div id="result" class="mt-6 hidden">
-      <h2 class="text-xl font-semibold mb-2">Hasil Perhitungan:</h2>
-      <ul class="list-disc ml-6 mb-4">
-        <li>ROA: <span id="roaResult"></span>%</li>
-        <li>ROE: <span id="roeResult"></span>%</li>
-        <li>PER: <span id="perResult"></span></li>
-        <li>PBV: <span id="pbvResult"></span></li>
-      </ul>
-      <canvas id="chart" width="400" height="200"></canvas>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <a href="#" onclick="showSection('fundamental')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Hitung Fundamental</a>
+      <a href="#" onclick="showSection('opsi2')" class="block bg-white p-6 rounded-lg shadow text-gray-400 cursor-not-allowed">Opsi 2 (dalam pengembangan)</a>
+      <a href="#" onclick="showSection('opsi3')" class="block bg-white p-6 rounded-lg shadow text-gray-400 cursor-not-allowed">Opsi 3 (dalam pengembangan)</a>
+    </div>
+
+    <!-- Hitung Fundamental Section -->
+    <div id="fundamental" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Hitung Rasio Fundamental</h2>
+      <form id="fundamentalForm" class="space-y-4">
+        <div><label class="block">Total Aset</label><input type="number" id="totalAssets" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Total Liabilitas</label><input type="number" id="liabilities" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Ekuitas</label><input type="number" id="equity" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Laba/Rugi (Net Income)</label><input type="number" id="netIncome" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Jumlah Saham Beredar</label><input type="number" id="sharesOutstanding" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Harga Saham Saat Ini</label><input type="number" id="stockPrice" class="w-full border p-2 rounded" required></div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+      </form>
+
+      <div id="resultFundamental" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Hasil Perhitungan:</h3>
+        <ul class="list-disc ml-6">
+          <li>EPS: <span id="epsResult"></span></li>
+          <li>PER: <span id="perResult"></span></li>
+          <li>BVPS: <span id="bvpsResult"></span></li>
+          <li>PBV: <span id="pbvResult"></span></li>
+          <li>ROA: <span id="roaResult"></span>%</li>
+          <li>ROE: <span id="roeResult"></span>%</li>
+          <li>DAR: <span id="darResult"></span></li>
+          <li>DER: <span id="derResult"></span></li>
+          <li>Total Market Cap: <span id="marketCapResult"></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Placeholder Sections -->
+    <div id="opsi2" class="hidden bg-white p-6 rounded-lg shadow text-gray-500 text-center">
+      <p>Fitur ini dalam tahap pengembangan.</p>
+    </div>
+    <div id="opsi3" class="hidden bg-white p-6 rounded-lg shadow text-gray-500 text-center">
+      <p>Fitur ini dalam tahap pengembangan.</p>
     </div>
   </div>
 
   <script>
-    document.getElementById('financeForm').addEventListener('submit', function(event) {
+    function showSection(id) {
+      ['fundamental', 'opsi2', 'opsi3'].forEach(section => {
+        document.getElementById(section).classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    document.getElementById('fundamentalForm').addEventListener('submit', function(event) {
       event.preventDefault();
 
-      const netIncome = parseFloat(document.getElementById('netIncome').value);
       const totalAssets = parseFloat(document.getElementById('totalAssets').value);
+      const liabilities = parseFloat(document.getElementById('liabilities').value);
       const equity = parseFloat(document.getElementById('equity').value);
+      const netIncome = parseFloat(document.getElementById('netIncome').value);
+      const sharesOutstanding = parseFloat(document.getElementById('sharesOutstanding').value);
       const stockPrice = parseFloat(document.getElementById('stockPrice').value);
-      const eps = parseFloat(document.getElementById('eps').value);
-      const bvps = parseFloat(document.getElementById('bvps').value);
 
+      const eps = netIncome / sharesOutstanding;
+      const per = stockPrice / eps;
+      const bvps = equity / sharesOutstanding;
+      const pbv = stockPrice / bvps;
       const roa = (netIncome / totalAssets) * 100;
       const roe = (netIncome / equity) * 100;
-      const per = stockPrice / eps;
-      const pbv = stockPrice / bvps;
+      const dar = liabilities / totalAssets;
+      const der = liabilities / equity;
+      const marketCap = sharesOutstanding * stockPrice;
 
+      document.getElementById('epsResult').textContent = eps.toFixed(2);
+      document.getElementById('perResult').textContent = per.toFixed(2);
+      document.getElementById('bvpsResult').textContent = bvps.toFixed(2);
+      document.getElementById('pbvResult').textContent = pbv.toFixed(2);
       document.getElementById('roaResult').textContent = roa.toFixed(2);
       document.getElementById('roeResult').textContent = roe.toFixed(2);
-      document.getElementById('perResult').textContent = per.toFixed(2);
-      document.getElementById('pbvResult').textContent = pbv.toFixed(2);
+      document.getElementById('darResult').textContent = dar.toFixed(2);
+      document.getElementById('derResult').textContent = der.toFixed(2);
+      document.getElementById('marketCapResult').textContent = marketCap.toLocaleString();
 
-      document.getElementById('result').classList.remove('hidden');
-
-      const ctx = document.getElementById('chart').getContext('2d');
-      if (window.myChart) window.myChart.destroy();
-      window.myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['ROA (%)', 'ROE (%)', 'PER', 'PBV'],
-          datasets: [{
-            label: 'Rasio Keuangan',
-            data: [roa, roe, per, pbv],
-            backgroundColor: [
-              'rgba(75, 192, 192, 0.6)',
-              'rgba(153, 102, 255, 0.6)',
-              'rgba(255, 206, 86, 0.6)',
-              'rgba(255, 99, 132, 0.6)'
-            ],
-            borderColor: [
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(255, 99, 132, 1)'
-            ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
+      document.getElementById('resultFundamental').classList.remove('hidden');
     });
   </script>
 </body>
