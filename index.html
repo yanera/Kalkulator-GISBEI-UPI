@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kalkulator Investasi GISBEI UPI</title>
+  <title>Web Investasi</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-6 relative min-h-screen">
@@ -12,8 +12,10 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <a href="#" onclick="showSection('fundamental')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Hitung Fundamental</a>
-      <a href="#" onclick="showSection('opsi2')" class="block bg-white p-6 rounded-lg shadow text-gray-400 cursor-not-allowed">Opsi 2 (dalam pengembangan)</a>
-      <a href="#" onclick="showSection('opsi3')" class="block bg-white p-6 rounded-lg shadow text-gray-400 cursor-not-allowed">Opsi 3 (dalam pengembangan)</a>
+      <a href="#" onclick="showSection('dividen')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Analisis Dividen</a>
+      <a href="#" onclick="showSection('valuasi')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Valuasi Saham</a>
+      <a href="#" onclick="showSection('piotroski')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Skor Piotroski</a>
+      <a href="#" onclick="showSection('sektor')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Perbandingan Sektor</a>
     </div>
 
     <!-- Hitung Fundamental Section -->
@@ -45,12 +47,71 @@
       </div>
     </div>
 
-    <!-- Placeholder Sections -->
-    <div id="opsi2" class="hidden bg-white p-6 rounded-lg shadow text-gray-500 text-center">
-      <p>Fitur ini dalam tahap pengembangan.</p>
+        <!-- Dividen -->
+    <div id="dividen" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Analisis Dividen</h2>
+      <form id="dividenForm" class="space-y-4">
+        <div><label class="block">Dividen per Saham (DPS)</label><input type="number" id="dps" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Harga Saham</label><input type="number" id="dividenHargaSaham" class="w-full border p-2 rounded" required></div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+      </form>
+      <div id="resultDividen" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
+        <p>Dividend Yield: <span id="yieldResult"></span>%</p>
+      </div>
     </div>
-    <div id="opsi3" class="hidden bg-white p-6 rounded-lg shadow text-gray-500 text-center">
-      <p>Fitur ini dalam tahap pengembangan.</p>
+
+    <!-- Valuasi DCF -->
+    <div id="valuasi" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Valuasi Saham (DCF Sederhana)</h2>
+      <form id="valuasiForm" class="space-y-4">
+        <div><label class="block">Free Cash Flow Tahunan</label><input type="number" id="fcf" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Tingkat Pertumbuhan (%)</label><input type="number" id="growthRate" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Tingkat Diskonto (%)</label><input type="number" id="discountRate" class="w-full border p-2 rounded" required></div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+      </form>
+      <div id="resultDCF" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Estimasi Nilai Intrinsik:</h3>
+        <p>Nilai DCF: <span id="dcfResult"></span></p>
+      </div>
+    </div>
+
+    <!-- Piotroski Score -->
+    <div id="piotroski" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Skor Piotroski</h2>
+      <form id="piotroskiForm" class="space-y-4">
+        <p class="text-sm text-gray-600">Centang jika kondisi terpenuhi:</p>
+        <div><input type="checkbox" id="profit"/> Laba Bersih Positif</div>
+        <div><input type="checkbox" id="roa"/> ROA Positif</div>
+        <div><input type="checkbox" id="operatingCF"/> Arus Kas Operasi Positif</div>
+        <div><input type="checkbox" id="cfRoA"/> Arus Kas Operasi > Laba Bersih</div>
+        <div><input type="checkbox" id="leverage"/> Rasio Leverage Menurun</div>
+        <div><input type="checkbox" id="liquid"/> Likuiditas Meningkat</div>
+        <div><input type="checkbox" id="dilution"/> Tidak Ada Dilusi Saham</div>
+        <div><input type="checkbox" id="margin"/> Margin Meningkat</div>
+        <div><input type="checkbox" id="turnover"/> Perputaran Aset Meningkat</div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+      </form>
+      <div id="resultPiotroski" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Skor:</h3>
+        <p>Skor Piotroski: <span id="piotroskiScore"></span>/9</p>
+      </div>
+    </div>
+
+    <!-- Perbandingan Sektor -->
+    <div id="sektor" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Perbandingan Sektor</h2>
+      <p class="mb-2">Masukkan data rasio PER dari beberapa sektor:</p>
+      <form id="sektorForm" class="space-y-4">
+        <div><label class="block">PER Sektor A</label><input type="number" id="perA" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">PER Sektor B</label><input type="number" id="perB" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">PER Sektor C</label><input type="number" id="perC" class="w-full border p-2 rounded" required></div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Bandingkan</button>
+      </form>
+      <div id="resultSektor" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
+        <p>Sektor dengan PER terendah: <span id="sektorTerbaik"></span></p>
+      </div>
     </div>
   </div>
 
@@ -61,43 +122,55 @@
 
   <script>
     function showSection(id) {
-      ['fundamental', 'opsi2', 'opsi3'].forEach(section => {
+      ['fundamental', 'dividen', 'valuasi', 'piotroski', 'sektor'].forEach(section => {
         document.getElementById(section).classList.add('hidden');
       });
       document.getElementById(id).classList.remove('hidden');
     }
 
-    document.getElementById('fundamentalForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+    // Analisis Dividen
+    document.getElementById('dividenForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const dps = parseFloat(document.getElementById('dps').value);
+      const harga = parseFloat(document.getElementById('dividenHargaSaham').value);
+      const yieldValue = (dps / harga) * 100;
+      document.getElementById('yieldResult').textContent = yieldValue.toFixed(2);
+      document.getElementById('resultDividen').classList.remove('hidden');
+    });
 
-      const totalAssets = parseFloat(document.getElementById('totalAssets').value);
-      const liabilities = parseFloat(document.getElementById('liabilities').value);
-      const equity = parseFloat(document.getElementById('equity').value);
-      const netIncome = parseFloat(document.getElementById('netIncome').value);
-      const sharesOutstanding = parseFloat(document.getElementById('sharesOutstanding').value);
-      const stockPrice = parseFloat(document.getElementById('stockPrice').value);
+    // DCF
+    document.getElementById('valuasiForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const fcf = parseFloat(document.getElementById('fcf').value);
+      const growth = parseFloat(document.getElementById('growthRate').value) / 100;
+      const discount = parseFloat(document.getElementById('discountRate').value) / 100;
+      const dcfValue = fcf * (1 + growth) / (discount - growth);
+      document.getElementById('dcfResult').textContent = dcfValue.toLocaleString();
+      document.getElementById('resultDCF').classList.remove('hidden');
+    });
 
-      const eps = netIncome / sharesOutstanding;
-      const per = stockPrice / eps;
-      const bvps = equity / sharesOutstanding;
-      const pbv = stockPrice / bvps;
-      const roa = (netIncome / totalAssets) * 100;
-      const roe = (netIncome / equity) * 100;
-      const dar = liabilities / totalAssets;
-      const der = liabilities / equity;
-      const marketCap = sharesOutstanding * stockPrice;
+    // Piotroski
+    document.getElementById('piotroskiForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let score = 0;
+      ['profit', 'roa', 'operatingCF', 'cfRoA', 'leverage', 'liquid', 'dilution', 'margin', 'turnover'].forEach(id => {
+        if (document.getElementById(id).checked) score++;
+      });
+      document.getElementById('piotroskiScore').textContent = score;
+      document.getElementById('resultPiotroski').classList.remove('hidden');
+    });
 
-      document.getElementById('epsResult').textContent = eps.toFixed(2);
-      document.getElementById('perResult').textContent = per.toFixed(2);
-      document.getElementById('bvpsResult').textContent = bvps.toFixed(2);
-      document.getElementById('pbvResult').textContent = pbv.toFixed(2);
-      document.getElementById('roaResult').textContent = roa.toFixed(2);
-      document.getElementById('roeResult').textContent = roe.toFixed(2);
-      document.getElementById('darResult').textContent = dar.toFixed(2);
-      document.getElementById('derResult').textContent = der.toFixed(2);
-      document.getElementById('marketCapResult').textContent = marketCap.toLocaleString();
-
-      document.getElementById('resultFundamental').classList.remove('hidden');
+    // Perbandingan Sektor
+    document.getElementById('sektorForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const per = {
+        'Sektor A': parseFloat(document.getElementById('perA').value),
+        'Sektor B': parseFloat(document.getElementById('perB').value),
+        'Sektor C': parseFloat(document.getElementById('perC').value)
+      };
+      const terbaik = Object.keys(per).reduce((a, b) => per[a] < per[b] ? a : b);
+      document.getElementById('sektorTerbaik').textContent = terbaik;
+      document.getElementById('resultSektor').classList.remove('hidden');
     });
   </script>
 </body>
