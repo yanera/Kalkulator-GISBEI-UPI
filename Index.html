@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Rasio Keuangan</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Kalkulator Rasio Keuangan</h1>
+    <form id="financeForm" class="space-y-4">
+      <div>
+        <label class="block">Laba Bersih (Net Income)</label>
+        <input type="number" id="netIncome" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block">Total Aset</label>
+        <input type="number" id="totalAssets" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block">Ekuitas Pemegang Saham</label>
+        <input type="number" id="equity" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block">Harga Saham per Lembar</label>
+        <input type="number" id="stockPrice" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block">Laba per Saham (EPS)</label>
+        <input type="number" id="eps" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block">Nilai Buku per Saham (BVPS)</label>
+        <input type="number" id="bvps" class="w-full border p-2 rounded" required>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+    </form>
+
+    <div id="result" class="mt-6 hidden">
+      <h2 class="text-xl font-semibold mb-2">Hasil Perhitungan:</h2>
+      <ul class="list-disc ml-6">
+        <li>ROA: <span id="roaResult"></span>%</li>
+        <li>ROE: <span id="roeResult"></span>%</li>
+        <li>PER: <span id="perResult"></span></li>
+        <li>PBV: <span id="pbvResult"></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('financeForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const netIncome = parseFloat(document.getElementById('netIncome').value);
+      const totalAssets = parseFloat(document.getElementById('totalAssets').value);
+      const equity = parseFloat(document.getElementById('equity').value);
+      const stockPrice = parseFloat(document.getElementById('stockPrice').value);
+      const eps = parseFloat(document.getElementById('eps').value);
+      const bvps = parseFloat(document.getElementById('bvps').value);
+
+      const roa = (netIncome / totalAssets) * 100;
+      const roe = (netIncome / equity) * 100;
+      const per = stockPrice / eps;
+      const pbv = stockPrice / bvps;
+
+      document.getElementById('roaResult').textContent = roa.toFixed(2);
+      document.getElementById('roeResult').textContent = roe.toFixed(2);
+      document.getElementById('perResult').textContent = per.toFixed(2);
+      document.getElementById('pbvResult').textContent = pbv.toFixed(2);
+
+      document.getElementById('result').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
