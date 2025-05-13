@@ -5,17 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkulator Investasi GISBEI UPI</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      background-color: #eff6ff;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-6 relative min-h-screen">
-  <div class="max-w-3xl mx-auto pb-16">
-    <h1 class="text-3xl font-bold mb-6 text-center">Dashboard Kalkulator Investasi GISBEI UPI</h1>
+<body class="bg-gradient-to-br from-white via-gray-100 to-gray-200 min-h-screen p-8">
+  <div class="max-w-5xl mx-auto">
+    <header class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-blue-600 mb-2">Dashboard Investasi GISBEI UPI</h1>
+      <p class="text-gray-600 text-lg">Analisis Keuangan Saham Secara Mudah dan Cepat</p>
+    </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <a href="#" onclick="showSection('fundamental')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Hitung Fundamental</a>
-      <a href="#" onclick="showSection('dividen')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Analisis Dividen</a>
-      <a href="#" onclick="showSection('valuasi')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Valuasi Saham</a>
-      <a href="#" onclick="showSection('piotroski')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Skor Piotroski</a>
-      <a href="#" onclick="showSection('sektor')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Perbandingan Sektor</a>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+      <a href="#" onclick="showSection('fundamental')" class="card bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl">
+        <h3 class="text-lg font-semibold text-blue-700">Hitung Fundamental</h3>
+      </a>
+      <a href="#" onclick="showSection('dividen')" class="card bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl">
+        <h3 class="text-lg font-semibold text-blue-700">Analisis Dividen</h3>
+      </a>
+      <a href="#" onclick="showSection('valuasi')" class="card bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl">
+        <h3 class="text-lg font-semibold text-blue-700">Valuasi Saham</h3>
+      </a>
+      <a href="#" onclick="showSection('piotroski')" class="card bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl">
+        <h3 class="text-lg font-semibold text-blue-700">Skor Piotroski</h3>
+      </a>
+      <a href="#" onclick="showSection('sektor')" class="card bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl">
+        <h3 class="text-lg font-semibold text-blue-700">Perbandingan Sektor</h3>
+      </a>
     </div>
 
 <!-- Hitung Fundamental -->
@@ -304,5 +329,11 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       document.getElementById('resultSektor').classList.remove('hidden');
     });
   </script>
+  
+  </div>
+
+  <footer class="text-center text-gray-500 text-sm mt-12">
+    &copy; 2025 Raihan Pratama Putera
+  </footer>
 </body>
 </html>
