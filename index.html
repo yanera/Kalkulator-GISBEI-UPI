@@ -18,34 +18,79 @@
       <a href="#" onclick="showSection('sektor')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Perbandingan Sektor</a>
     </div>
 
-    <!-- Hitung Fundamental Section -->
-    <div id="fundamental" class="hidden bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">Hitung Rasio Fundamental</h2>
-      <form id="fundamentalForm" class="space-y-4">
-        <div><label class="block">Total Aset</label><input type="number" id="totalAssets" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Total Liabilitas</label><input type="number" id="liabilities" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Ekuitas</label><input type="number" id="equity" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Laba/Rugi (Net Income)</label><input type="number" id="netIncome" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Jumlah Saham Beredar</label><input type="number" id="sharesOutstanding" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Harga Saham Saat Ini</label><input type="number" id="stockPrice" class="w-full border p-2 rounded" required></div>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
-      </form>
+   <!-- Hitung Fundamental -->
+<div id="fundamental" class="hidden bg-white p-6 rounded-lg shadow">
+  <h2 class="text-xl font-semibold mb-4">Hitung Fundamental</h2>
+  <form id="fundamentalForm" class="space-y-4">
+    <div><label class="block">Total Aset</label><input type="number" id="totalAssets" class="w-full border p-2 rounded" required></div>
+    <div><label class="block">Total Liabilitas</label><input type="number" id="totalLiabilities" class="w-full border p-2 rounded" required></div>
+    <div><label class="block">Ekuitas</label><input type="number" id="equity" class="w-full border p-2 rounded" required></div>
+    <div><label class="block">Laba Bersih</label><input type="number" id="netIncome" class="w-full border p-2 rounded" required></div>
+    <div><label class="block">Jumlah Saham Beredar</label><input type="number" id="sharesOutstanding" class="w-full border p-2 rounded" required></div>
+    <div><label class="block">Harga Saham Saat Ini</label><input type="number" id="currentPrice" class="w-full border p-2 rounded" required></div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+  </form>
+  <div id="resultFundamental" class="mt-6 hidden">
+    <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
+    <ul class="list-disc pl-6">
+      <li>EPS: <span id="epsResult"></span></li>
+      <li>PER: <span id="perResult"></span></li>
+      <li>BVPS: <span id="bvpsResult"></span></li>
+      <li>PBV: <span id="pbvResult"></span></li>
+      <li>ROA: <span id="roaResult"></span>%</li>
+      <li>ROE: <span id="roeResult"></span>%</li>
+      <li>DAR: <span id="darResult"></span></li>
+      <li>DER: <span id="derResult"></span></li>
+      <li>Total Market Cap: <span id="marketCapResult"></span></li>
+    </ul>
+  </div>
+</div>
 
-      <div id="resultFundamental" class="mt-6 hidden">
-        <h3 class="text-lg font-semibold mb-2">Hasil Perhitungan:</h3>
-        <ul class="list-disc ml-6">
-          <li>EPS: <span id="epsResult"></span></li>
-          <li>PER: <span id="perResult"></span></li>
-          <li>BVPS: <span id="bvpsResult"></span></li>
-          <li>PBV: <span id="pbvResult"></span></li>
-          <li>ROA: <span id="roaResult"></span>%</li>
-          <li>ROE: <span id="roeResult"></span>%</li>
-          <li>DAR: <span id="darResult"></span></li>
-          <li>DER: <span id="derResult"></span></li>
-          <li>Total Market Cap: <span id="marketCapResult"></span></li>
-        </ul>
-      </div>
-    </div>
+<script>
+  // Hitung Fundamental
+  document.getElementById('fundamentalForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Mencegah form untuk submit secara default
+
+    // Mengambil nilai input dari form
+    const totalAssets = parseFloat(document.getElementById('totalAssets').value);
+    const totalLiabilities = parseFloat(document.getElementById('totalLiabilities').value);
+    const equity = parseFloat(document.getElementById('equity').value);
+    const netIncome = parseFloat(document.getElementById('netIncome').value);
+    const shares = parseFloat(document.getElementById('sharesOutstanding').value);
+    const price = parseFloat(document.getElementById('currentPrice').value);
+
+    // Cek apakah semua input valid
+    if (isNaN(totalAssets) || isNaN(totalLiabilities) || isNaN(equity) || isNaN(netIncome) || isNaN(shares) || isNaN(price)) {
+      alert("Pastikan semua input terisi dengan angka yang valid.");
+      return; // Jika ada input yang tidak valid, hentikan eksekusi.
+    }
+
+    // Melakukan perhitungan
+    const eps = netIncome / shares;
+    const per = price / eps;
+    const bvps = equity / shares;
+    const pbv = price / bvps;
+    const roa = (netIncome / totalAssets) * 100;
+    const roe = (netIncome / equity) * 100;
+    const dar = totalLiabilities / totalAssets;
+    const der = totalLiabilities / equity;
+    const marketCap = shares * price;
+
+    // Menampilkan hasil perhitungan ke dalam elemen yang sesuai
+    document.getElementById('epsResult').textContent = eps.toFixed(2);
+    document.getElementById('perResult').textContent = per.toFixed(2);
+    document.getElementById('bvpsResult').textContent = bvps.toFixed(2);
+    document.getElementById('pbvResult').textContent = pbv.toFixed(2);
+    document.getElementById('roaResult').textContent = roa.toFixed(2);
+    document.getElementById('roeResult').textContent = roe.toFixed(2);
+    document.getElementById('darResult').textContent = dar.toFixed(2);
+    document.getElementById('derResult').textContent = der.toFixed(2);
+    document.getElementById('marketCapResult').textContent = marketCap.toLocaleString();
+
+    // Menampilkan hasil
+    document.getElementById('resultFundamental').classList.remove('hidden');
+  });
+</script>
 
         <!-- Dividen -->
     <div id="dividen" class="hidden bg-white p-6 rounded-lg shadow">
