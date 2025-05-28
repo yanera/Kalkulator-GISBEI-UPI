@@ -3,135 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalkulator Investasi GISBEI UPI</title>
+  <title>Dashboard Kalkulator Investasi GISBEI UPI</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 p-6 relative min-h-screen">
   <div class="max-w-3xl mx-auto pb-16">
     <h1 class="text-3xl font-bold mb-6 text-center">Dashboard Kalkulator Investasi GISBEI UPI</h1>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <a href="#" onclick="showSection('fundamental')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Hitung Fundamental</a>
       <a href="#" onclick="showSection('dividen')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Analisis Dividen</a>
       <a href="#" onclick="showSection('valuasi')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Valuasi Saham</a>
       <a href="#" onclick="showSection('piotroski')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Skor Piotroski</a>
-      <a href="#" onclick="showSection('sektor')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Perbandingan Sektor</a>
+      <a href="#" onclick="showSection('regularInvestment')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Simulasi Investasi Rutin</a>
       <a href="#" onclick="showSection('profilRisiko')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Profil Risiko</a>
-      <a href="#" onclick="showSection('autoRejection')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Auto Rejection</a>
+      <a href="#" onclick="showSection('autoRejectionARA')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Hitung ARA</a>
+      <a href="#" onclick="showSection('autoRejectionARB')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Hitung ARB</a>
       <a href="#" onclick="showSection('dca')" class="block bg-white p-6 rounded-lg shadow hover:bg-blue-50 transition">Dollar Cost Averaging</a>
     </div>
 
-<div id="fundamental" class="hidden bg-white p-6 rounded-lg shadow">
-  <h2 class="text-xl font-semibold mb-4">Hitung Fundamental</h2>
-  <form id="fundamentalForm" class="space-y-4">
-    <div><label class="block">Total Aset</label><input type="text" id="totalAssets" class="w-full border p-2 rounded" required></div>
-    <div><label class="block">Total Liabilitas</label><input type="text" id="totalLiabilities" class="w-full border p-2 rounded" required></div>
-    <div><label class="block">Ekuitas</label><input type="text" id="equity" class="w-full border p-2 rounded" required></div>
-    <div><label class="block">Laba Bersih</label><input type="text" id="netIncome" class="w-full border p-2 rounded" required></div>
-    <div><label class="block">Jumlah Saham Beredar</label><input type="text" id="sharesOutstanding" class="w-full border p-2 rounded" required></div>
-    <div><label class="block">Harga Saham Saat Ini</label><input type="text" id="currentPrice" class="w-full border p-2 rounded" required></div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
-  </form>
-  <div id="resultFundamental" class="mt-6 hidden">
-    <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
-    <ul class="list-disc pl-6">
-      <li>EPS: <span id="epsResult"></span></li>
-      <li>PER: <span id="perResult"></span></li>
-      <li>BVPS: <span id="bvpsResult"></span></li>
-      <li>PBV: <span id="pbvResult"></span></li>
-      <li>ROA: <span id="roaResult"></span>%</li>
-      <li>ROE: <span id="roeResult"></span>%</li>
-      <li>DAR: <span id="darResult"></span></li>
-      <li>DER: <span id="derResult"></span></li>
-      <li>Total Market Cap: <span id="marketCapResult"></span></li>
-    </ul>
-  </div>
-</div>
+    <div id="fundamental" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Hitung Fundamental</h2>
+      <form id="fundamentalForm" class="space-y-4">
+        <div><label class="block">Total Aset</label><input type="text" id="totalAssets" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Total Liabilitas</label><input type="text" id="totalLiabilities" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Ekuitas</label><input type="text" id="equity" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Laba Bersih</label><input type="text" id="netIncome" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Jumlah Saham Beredar</label><input type="text" id="sharesOutstanding" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Harga Saham Saat Ini</label><input type="text" id="currentPrice" class="w-full border p-2 rounded format-currency" required></div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+      </form>
+      <div id="resultFundamental" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
+        <ul class="list-disc pl-6">
+          <li>EPS: <span id="epsResult"></span></li>
+          <li>PER: <span id="perResult"></span></li>
+          <li>BVPS: <span id="bvpsResult"></span></li>
+          <li>PBV: <span id="pbvResult"></span></li>
+          <li>ROA: <span id="roaResult"></span>%</li>
+          <li>ROE: <span id="roeResult"></span>%</li>
+          <li>DAR: <span id="darResult"></span></li>
+          <li>DER: <span id="derResult"></span></li>
+          <li>Total Market Cap: <span id="marketCapResult"></span></li>
+        </ul>
+      </div>
+    </div>
 
-<script>
-    // Fungsi untuk menambahkan pemisah ribuan pada input
-function formatNumber(input) {
-  let value = input.value.replace(/\D/g, ''); // Menghapus semua non-digit
-  if (value) {
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Menambahkan titik pada setiap ribuan
-  }
-  input.value = value;
-}
-
-// Mengambil input dan menambahkan event listener pada masing-masing input
-document.getElementById('totalAssets').addEventListener('input', function() {
-  formatNumber(this);
-});
-
-document.getElementById('totalLiabilities').addEventListener('input', function() {
-  formatNumber(this);
-});
-
-document.getElementById('equity').addEventListener('input', function() {
-  formatNumber(this);
-});
-
-document.getElementById('netIncome').addEventListener('input', function() {
-  formatNumber(this);
-});
-
-document.getElementById('sharesOutstanding').addEventListener('input', function() {
-  formatNumber(this);
-});
-
-document.getElementById('currentPrice').addEventListener('input', function() {
-  formatNumber(this);
-});
-  // Hitung Fundamental
-document.getElementById('fundamentalForm').addEventListener('submit', function(e) {
-  e.preventDefault(); // Mencegah form untuk submit secara default
-
-  // Mengambil nilai input dari form dan menghapus titik
-  const totalAssets = parseFloat(document.getElementById('totalAssets').value.replace(/\./g, ''));
-  const totalLiabilities = parseFloat(document.getElementById('totalLiabilities').value.replace(/\./g, ''));
-  const equity = parseFloat(document.getElementById('equity').value.replace(/\./g, ''));
-  const netIncome = parseFloat(document.getElementById('netIncome').value.replace(/\./g, ''));
-  const shares = parseFloat(document.getElementById('sharesOutstanding').value.replace(/\./g, ''));
-  const price = parseFloat(document.getElementById('currentPrice').value.replace(/\./g, ''));
-
-  // Cek apakah semua input valid
-  if (isNaN(totalAssets) || isNaN(totalLiabilities) || isNaN(equity) || isNaN(netIncome) || isNaN(shares) || isNaN(price)) {
-    alert("Pastikan semua input terisi dengan angka yang valid.");
-    return; // Jika ada input yang tidak valid, hentikan eksekusi.
-  }
-
-  // Melakukan perhitungan
-  const eps = netIncome / shares;
-  const per = price / eps;
-  const bvps = equity / shares;
-  const pbv = price / bvps;
-  const roa = (netIncome / totalAssets) * 100;
-  const roe = (netIncome / equity) * 100;
-  const dar = totalLiabilities / totalAssets;
-  const der = totalLiabilities / equity;
-  const marketCap = shares * price;
-
-  // Menampilkan hasil perhitungan ke dalam elemen yang sesuai
-  document.getElementById('epsResult').textContent = eps.toFixed(2);
-  document.getElementById('perResult').textContent = per.toFixed(2);
-  document.getElementById('bvpsResult').textContent = bvps.toFixed(2);
-  document.getElementById('pbvResult').textContent = pbv.toFixed(2);
-  document.getElementById('roaResult').textContent = roa.toFixed(2);
-  document.getElementById('roeResult').textContent = roe.toFixed(2);
-  document.getElementById('darResult').textContent = dar.toFixed(2);
-  document.getElementById('derResult').textContent = der.toFixed(2);
-  document.getElementById('marketCapResult').textContent = marketCap.toLocaleString();
-
-  // Menampilkan hasil
-  document.getElementById('resultFundamental').classList.remove('hidden');
-});
-</script>
-
-        <div id="dividen" class="hidden bg-white p-6 rounded-lg shadow">
+    <div id="dividen" class="hidden bg-white p-6 rounded-lg shadow">
       <h2 class="text-xl font-semibold mb-4">Analisis Dividen</h2>
       <form id="dividenForm" class="space-y-4">
-        <div><label class="block">Dividen per Saham (DPS)</label><input type="number" id="dps" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Harga Saham</label><input type="number" id="dividenHargaSaham" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Dividen per Saham (DPS)</label><input type="text" id="dps" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Harga Saham</label><input type="text" id="dividenHargaSaham" class="w-full border p-2 rounded format-currency" required></div>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
       </form>
       <div id="resultDividen" class="mt-6 hidden">
@@ -143,7 +66,7 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
     <div id="valuasi" class="hidden bg-white p-6 rounded-lg shadow">
       <h2 class="text-xl font-semibold mb-4">Valuasi Saham (DCF Sederhana)</h2>
       <form id="valuasiForm" class="space-y-4">
-        <div><label class="block">Free Cash Flow Tahunan</label><input type="number" id="fcf" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Free Cash Flow Tahunan</label><input type="text" id="fcf" class="w-full border p-2 rounded format-currency" required></div>
         <div><label class="block">Tingkat Pertumbuhan (%)</label><input type="number" id="growthRate" class="w-full border p-2 rounded" required></div>
         <div><label class="block">Tingkat Diskonto (%)</label><input type="number" id="discountRate" class="w-full border p-2 rounded" required></div>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
@@ -175,18 +98,23 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       </div>
     </div>
 
-    <div id="sektor" class="hidden bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">Perbandingan Sektor</h2>
-      <p class="mb-2">Masukkan data rasio PER dari beberapa sektor:</p>
-      <form id="sektorForm" class="space-y-4">
-        <div><label class="block">PER Sektor A</label><input type="number" id="perA" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">PER Sektor B</label><input type="number" id="perB" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">PER Sektor C</label><input type="number" id="perC" class="w-full border p-2 rounded" required></div>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Bandingkan</button>
+    <div id="regularInvestment" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Simulasi Investasi Rutin</h2>
+      <form id="regularInvestmentForm" class="space-y-4">
+        <div><label class="block">Jumlah Investasi Rutin per Periode (Rp)</label><input type="text" id="investmentAmount" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Harga Saham Rata-rata per Periode (Rp)</label><input type="text" id="avgStockPrice" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Jumlah Periode Investasi</label><input type="number" id="numPeriods" class="w-full border p-2 rounded" value="12" required></div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Mulai Simulasi</button>
       </form>
-      <div id="resultSektor" class="mt-6 hidden">
-        <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
-        <p>Sektor dengan PER terendah: <span id="sektorTerbaik"></span></p>
+      <div id="resultRegularInvestment" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Hasil Simulasi:</h3>
+        <p>Total Investasi: <span id="totalInvestmentRI"></span></p>
+        <p>Total Saham Terkumpul: <span id="totalSharesRI"></span> lembar</p>
+        <p>Harga Rata-rata per Saham: <span id="averagePriceRI"></span></p>
+        <p class="text-sm text-gray-600 mt-2">*Simulasi ini mengasumsikan harga saham rata-rata per periode.</p>
+        <div class="mt-4">
+          <canvas id="regularInvestmentChartCanvas"></canvas>
+        </div>
       </div>
     </div>
 
@@ -309,45 +237,75 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       </div>
     </div>
 
-    <div id="autoRejection" class="hidden bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">Hitung Auto Rejection</h2>
-      <form id="autoRejectionForm" class="space-y-4">
-        <div><label class="block">Harga Saham</label><input type="text" id="hargaSaham" class="w-full border p-2 rounded" required></div>
+    <div id="autoRejectionARA" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Hitung Auto Rejection Atas (ARA)</h2>
+      <form id="araForm" class="space-y-4">
+        <div><label class="block">Harga Saham</label><input type="text" id="hargaSahamARA" class="w-full border p-2 rounded format-currency" required></div>
         <div>
           <label class="block">Persentase ARA (%)</label>
           <input type="number" id="persentaseARA" class="w-full border p-2 rounded" value="" required>
         </div>
-        <div>
-          <label class="block">Persentase ARB (%)</label>
-          <input type="number" id="persentaseARB" class="w-full border p-2 rounded" value="15" readonly required>
-        </div>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung ARA</button>
       </form>
       <div class="mt-4 text-sm text-gray-700">
         <p class="mb-2 font-semibold">Perhatian:</p>
-        <p class="mb-2">ARB (Auto Rejection Bawah): Diseragamkan menjadi 15% untuk semua saham, terlepas dari fraksi harga.</p>
         <p class="mb-2">ARA (Auto Rejection Atas): Mengikuti batasan simetris sejak 2023:</p>
         <ul class="list-disc pl-5">
           <li>35% untuk saham dengan harga Rp50 – Rp200.</li>
           <li>25% untuk saham dengan harga Rp200 – Rp5.000.</li>
           <li>20% untuk saham dengan harga di atas Rp5.000.</li>
         </ul>
-        <p class="mt-2 text-red-500">Khusus IPO: Pada hari pertama perdagangan saham baru, batas ARA/ARB bisa dua kali lipat untuk mengakomodasi volatilitas awal. (*Ini mengacu pada tahun 2025 jika aturan dari BEI aturan diatas tidak berlaku)</p>
+        <p class="mt-2 text-red-500">*Ini mengacu pada tahun 2025 jika aturan dari BEI aturan diatas tidak berlaku</p>
       </div>
-      <div id="resultAutoRejection" class="mt-6 hidden">
+      <div id="resultAutoRejectionARA" class="mt-6 hidden">
         <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
         <p>Auto Rejection Atas: <span id="autoRejectionAtas"></span></p>
+      </div>
+
+      <div id="predictionARA" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Prediksi Harga Saham 5 Hari (ARA):</h3>
+        <ul id="predictedPricesARA" class="list-disc pl-6"></ul>
+        <div class="mt-4">
+          <canvas id="araChartCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="autoRejectionARB" class="hidden bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Hitung Auto Rejection Bawah (ARB)</h2>
+      <form id="arbForm" class="space-y-4">
+        <div><label class="block">Harga Saham</label><input type="text" id="hargaSahamARB" class="w-full border p-2 rounded format-currency" required></div>
+        <div>
+          <label class="block">Persentase ARB (%)</label>
+          <input type="number" id="persentaseARB" class="w-full border p-2 rounded" value="" required>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung ARB</button>
+      </form>
+      <div class="mt-4 text-sm text-gray-700">
+        <p class="mb-2 font-semibold">Perhatian:</p>
+        <p class="mb-2">Berdasarkan aturan BEI 2025 ARB (Auto Rejection Bawah): Diseragamkan menjadi 15% untuk semua saham, terlepas dari fraksi harga.</p>
+      </div>
+      <div id="resultAutoRejectionARB" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Hasil:</h3>
         <p>Auto Rejection Bawah: <span id="autoRejectionBawah"></span></p>
+      </div>
+
+      <div id="predictionARB" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Prediksi Harga Saham 5 Hari (ARB):</h3>
+        <ul id="predictedPricesARB" class="list-disc pl-6"></ul>
+        <div class="mt-4">
+          <canvas id="arbChartCanvas"></canvas>
+        </div>
       </div>
     </div>
 
     <div id="dca" class="hidden bg-white p-6 rounded-lg shadow">
       <h2 class="text-xl font-semibold mb-4">Hitung Dollar Cost Averaging</h2>
       <form id="dcaForm" class="space-y-4">
-        <div><label class="block">Investasi Per Periode</label><input type="text" id="investasiPerPeriode" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Harga Saham Periode 1</label><input type="text" id="harga1" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Harga Saham Periode 2</label><input type="text" id="harga2" class="w-full border p-2 rounded" required></div>
-        <div><label class="block">Harga Saham Periode 3</label><input type="text" id="harga3" class="w-full border p-2 rounded" required></div>
+        <div><label class="block">Investasi Per Periode</label><input type="text" id="investasiPerPeriode" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Harga Saham Periode 1</label><input type="text" id="harga1" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Harga Saham Periode 2</label><input type="text" id="harga2" class="w-full border p-2 rounded format-currency" required></div>
+        <div><label class="block">Harga Saham Periode 3</label><input type="text" id="harga3" class="w-full border p-2 rounded format-currency" required></div>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Hitung</button>
       </form>
       <div id="resultDCA" class="mt-6 hidden">
@@ -364,34 +322,45 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
   </footer>
 
   <script>
+    // Variabel untuk menyimpan instance chart agar bisa dihancurkan dan dibuat ulang
+    let araChartInstance = null;
+    let arbChartInstance = null;
+    let regularInvestmentChartInstance = null; // New chart instance for regular investment
+
+    // Fungsi untuk menampilkan bagian yang dipilih dan menyembunyikan yang lain
     function showSection(id) {
-      ['fundamental', 'dividen', 'valuasi', 'piotroski', 'sektor', 'profilRisiko', 'autoRejection', 'dca'].forEach(section => {
+      // Daftar semua bagian yang dapat ditampilkan
+      const sections = ['fundamental', 'dividen', 'valuasi', 'piotroski', 'regularInvestment', 'profilRisiko', 'autoRejectionARA', 'autoRejectionARB', 'dca'];
+      sections.forEach(section => {
         document.getElementById(section).classList.add('hidden');
       });
+      // Menampilkan bagian yang diminta
       document.getElementById(id).classList.remove('hidden');
     }
 
-    // Format angka dengan titik
+    // Fungsi untuk memformat angka dengan pemisah ribuan (titik)
     function formatNumberWithDots(value) {
       return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
+    // Fungsi untuk mendapatkan nilai mentah (tanpa titik) dari input
     function getRawValue(id) {
       const input = document.getElementById(id);
       return parseFloat((input.dataset.raw || input.value || '').replace(/\./g, '')) || 0;
-}
+    }
 
-    document.querySelectorAll('input[type=number]').forEach(input => {
-      input.type = 'text';
+    // Menambahkan event listener untuk memformat input angka secara otomatis
+    // Target semua input dengan kelas 'format-currency'
+    document.querySelectorAll('input.format-currency').forEach(input => {
       input.addEventListener('input', function () {
-        const digitsOnly = this.value.replace(/\./g, '');
-        const formatted = formatNumberWithDots(digitsOnly);
+        const digitsOnly = this.value.replace(/\./g, ''); // Menghapus titik yang ada
+        const formatted = formatNumberWithDots(digitsOnly); // Memformat dengan titik
         this.value = formatted;
-        this.dataset.raw = digitsOnly;
+        this.dataset.raw = digitsOnly; // Menyimpan nilai mentah di dataset
       });
     });
 
-    // Fundamental
+    // Perhitungan Fundamental
     document.getElementById('fundamentalForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const totalAssets = getRawValue('totalAssets');
@@ -424,7 +393,7 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       document.getElementById('resultFundamental').classList.remove('hidden');
     });
 
-    // Dividen
+    // Perhitungan Dividen
     document.getElementById('dividenForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const dps = getRawValue('dps');
@@ -434,7 +403,7 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       document.getElementById('resultDividen').classList.remove('hidden');
     });
 
-    // DCF
+    // Perhitungan DCF
     document.getElementById('valuasiForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const fcf = getRawValue('fcf');
@@ -445,7 +414,7 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       document.getElementById('resultDCF').classList.remove('hidden');
     });
 
-    // Piotroski
+    // Perhitungan Piotroski
     document.getElementById('piotroskiForm').addEventListener('submit', function(e) {
       e.preventDefault();
       let score = 0;
@@ -456,20 +425,39 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       document.getElementById('resultPiotroski').classList.remove('hidden');
     });
 
-    // Sektor
-    document.getElementById('sektorForm').addEventListener('submit', function(e) {
+    // Simulasi Investasi Rutin
+    document.getElementById('regularInvestmentForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const per = {
-        'Sektor A': getRawValue('perA'),
-        'Sektor B': getRawValue('perB'),
-        'Sektor C': getRawValue('perC')
-      };
-      const terbaik = Object.keys(per).reduce((a, b) => per[a] < per[b] ? a : b);
-      document.getElementById('sektorTerbaik').textContent = terbaik;
-      document.getElementById('resultSektor').classList.remove('hidden');
+      const investmentAmount = getRawValue('investmentAmount');
+      const avgStockPrice = getRawValue('avgStockPrice');
+      const numPeriods = parseInt(document.getElementById('numPeriods').value);
+
+      const totalInvestment = investmentAmount * numPeriods;
+      const totalShares = (investmentAmount / avgStockPrice) * numPeriods;
+      const averagePrice = totalInvestment / totalShares; // This will be the same as avgStockPrice if price is constant
+
+      document.getElementById('totalInvestmentRI').textContent = totalInvestment.toLocaleString();
+      document.getElementById('totalSharesRI').textContent = totalShares.toFixed(2);
+      document.getElementById('averagePriceRI').textContent = averagePrice.toLocaleString();
+      document.getElementById('resultRegularInvestment').classList.remove('hidden');
+
+      // Prepare data for the chart
+      const labels = [];
+      const data = [];
+      let cumulativeInvestment = 0;
+
+      for (let i = 1; i <= numPeriods; i++) {
+        labels.push(`Periode ${i}`);
+        cumulativeInvestment += investmentAmount;
+        data.push(cumulativeInvestment);
+      }
+
+      // Draw the chart
+      drawChart('regularInvestmentChartCanvas', labels, data, 'Total Investasi Kumulatif', 'rgb(54, 162, 235)');
     });
 
-        // Profil Risiko
+
+    // Perhitungan Profil Risiko
     document.getElementById('risikoForm').addEventListener('submit', function(e) {
       e.preventDefault();
       let total = 0;
@@ -487,22 +475,149 @@ document.getElementById('fundamentalForm').addEventListener('submit', function(e
       document.getElementById('hasilRisiko').classList.remove('hidden');
     });
 
-    // Auto Rejection
-    document.getElementById('autoRejectionForm').addEventListener('submit', function(e) {
+    // Fungsi untuk menggambar grafik
+    function drawChart(canvasId, labels, data, label, borderColor) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+
+      // Hancurkan chart sebelumnya jika ada
+      if (canvasId === 'araChartCanvas' && araChartInstance) {
+        araChartInstance.destroy();
+      } else if (canvasId === 'arbChartCanvas' && arbChartInstance) {
+        arbChartInstance.destroy();
+      } else if (canvasId === 'regularInvestmentChartCanvas' && regularInvestmentChartInstance) {
+        regularInvestmentChartInstance.destroy();
+      }
+
+      const newChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: label,
+            data: data,
+            borderColor: borderColor,
+            borderWidth: 2,
+            fill: false,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Periode' // Changed from 'Hari' to 'Periode' for general use
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Jumlah' // Changed from 'Harga Saham' to 'Jumlah' for general use
+              },
+              beginAtZero: true // Set to true for cumulative investment
+            }
+          }
+        }
+      });
+
+      // Simpan instance chart baru
+      if (canvasId === 'araChartCanvas') {
+        araChartInstance = newChart;
+      } else if (canvasId === 'arbChartCanvas') {
+        arbChartInstance = newChart;
+      } else if (canvasId === 'regularInvestmentChartCanvas') {
+        regularInvestmentChartInstance = newChart;
+      }
+    }
+
+    // Fungsi untuk mendapatkan persentase ARA berdasarkan harga saham
+    function getARAPercentageByPrice(price) {
+      if (price >= 50 && price <= 200) {
+        return 0.35; // 35%
+      } else if (price > 200 && price <= 5000) {
+        return 0.25; // 25%
+      } else if (price > 5000) {
+        return 0.20; // 20%
+      }
+      return 0; // Default, for prices below 50 or invalid
+    }
+
+    // Perhitungan Auto Rejection Atas (ARA)
+    document.getElementById('araForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const hargaSaham = getRawValue('hargaSaham');
-      const persentaseARA = parseFloat(document.getElementById('persentaseARA').value) / 100;
-      const persentaseARB = parseFloat(document.getElementById('persentaseARB').value) / 100;
+      const hargaSaham = getRawValue('hargaSahamARA');
+      const persentaseARAInput = parseFloat(document.getElementById('persentaseARA').value) / 100; // Persentase ARA dari input
 
-      const atas = hargaSaham + (hargaSaham * persentaseARA);
-      const bawah = hargaSaham - (hargaSaham * persentaseARB);
-
+      // Hitung ARA awal berdasarkan input
+      const atas = hargaSaham + (hargaSaham * persentaseARAInput);
       document.getElementById('autoRejectionAtas').textContent = atas.toLocaleString();
-      document.getElementById('autoRejectionBawah').textContent = bawah.toLocaleString();
-      document.getElementById('resultAutoRejection').classList.remove('hidden');
+      document.getElementById('resultAutoRejectionARA').classList.remove('hidden');
+
+      // Prediksi 5 hari untuk ARA
+      const predictedPrices = [hargaSaham]; // Mulai dengan harga awal
+      const labels = ['Hari 0 (Awal)'];
+      let currentPrice = hargaSaham;
+
+      for (let i = 0; i < 5; i++) {
+        const araRate = getARAPercentageByPrice(currentPrice); // Dapatkan persentase ARA sesuai aturan
+        currentPrice = currentPrice + (currentPrice * araRate);
+        predictedPrices.push(currentPrice);
+        labels.push(`Hari ${i + 1}`);
+      }
+
+      const predictedPricesList = document.getElementById('predictedPricesARA');
+      predictedPricesList.innerHTML = ''; // Bersihkan daftar sebelumnya
+      predictedPrices.forEach((price, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${labels[index]}: Rp ${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+        predictedPricesList.appendChild(listItem);
+      });
+
+      document.getElementById('predictionARA').classList.remove('hidden');
+      drawChart('araChartCanvas', labels, predictedPrices, 'Prediksi Harga Saham (ARA)', 'rgb(75, 192, 192)');
     });
 
-    // Dollar Cost Averaging
+    // Perhitungan Auto Rejection Bawah (ARB)
+    document.getElementById('arbForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const hargaSaham = getRawValue('hargaSahamARB');
+      const persentaseARBInput = parseFloat(document.getElementById('persentaseARB').value) / 100; // Persentase ARB dari input
+
+      // Hitung ARB awal berdasarkan input
+      const bawah = hargaSaham - (hargaSaham * persentaseARBInput);
+      document.getElementById('autoRejectionBawah').textContent = bawah.toLocaleString();
+      document.getElementById('resultAutoRejectionARB').classList.remove('hidden');
+
+      // Prediksi 5 hari untuk ARB
+      const predictedPrices = [hargaSaham]; // Mulai dengan harga awal
+      const labels = ['Hari 0 (Awal)'];
+      let currentPrice = hargaSaham;
+
+      for (let i = 0; i < 5; i++) {
+        currentPrice = currentPrice - (currentPrice * persentaseARBInput); // Gunakan persentase ARB dari input
+        predictedPrices.push(currentPrice);
+        labels.push(`Hari ${i + 1}`);
+      }
+
+      const predictedPricesList = document.getElementById('predictedPricesARB');
+      predictedPricesList.innerHTML = ''; // Bersihkan daftar sebelumnya
+      predictedPrices.forEach((price, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${labels[index]}: Rp ${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+        predictedPricesList.appendChild(listItem);
+      });
+
+      document.getElementById('predictionARB').classList.remove('hidden');
+      drawChart('arbChartCanvas', labels, predictedPrices, 'Prediksi Harga Saham (ARB)', 'rgb(255, 99, 132)');
+    });
+
+    // Perhitungan Dollar Cost Averaging
     document.getElementById('dcaForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const investasi = getRawValue('investasiPerPeriode');
